@@ -308,6 +308,37 @@
       color: var(--muted);
     }
 
+    .status-value.plan-mobile {
+      background: rgba(170, 179, 194, 0.14);
+      color: #d8dee9;
+    }
+
+    .status-value.plan-basic {
+      background: rgba(103, 168, 255, 0.16);
+      color: #9dc3ff;
+    }
+
+    .status-value.plan-standard {
+      background: rgba(255, 179, 71, 0.16);
+      color: #ffc56d;
+    }
+
+    .status-value.plan-standard-ads {
+      background: rgba(255, 138, 61, 0.18);
+      color: #ffb27a;
+    }
+
+    .status-value.plan-premium {
+      background: rgba(229, 9, 20, 0.2);
+      color: #ff6b76;
+      font-weight: 900;
+    }
+
+    .status-value.plan-unknown {
+      background: rgba(170, 179, 194, 0.1);
+      color: var(--muted);
+    }
+
     .log-header {
       display: flex;
       align-items: center;
@@ -439,6 +470,14 @@
       <div class="status-row">
         <div class="status-label">PIN ล่าสุด</div>
         <div class="status-value pin-value" id="currentPinText">-</div>
+      </div>
+      <div class="status-row">
+        <div class="status-label">แพ็กเกจ</div>
+        <div class="status-value" id="planText">ยังไม่ได้โหลด</div>
+      </div>
+      <div class="actions">
+        <button id="loadPlan" class="btn-secondary" type="button">ดึงข้อมูลแพ็กเกจ</button>
+        <button id="goBrowse" class="btn-secondary" type="button">กลับหน้า Browse</button>
       </div>
       <div class="log-header">
         <span>บันทึก</span>

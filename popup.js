@@ -10,6 +10,9 @@ const resetConfigButton = document.getElementById('resetConfig');
 const startButton = document.getElementById('start');
 const stopButton = document.getElementById('stop');
 const toggleLogButton = document.getElementById('toggleLog');
+const loadPlanButton = document.getElementById('loadPlan');
+const goBrowseButton = document.getElementById('goBrowse');
+const planText = document.getElementById('planText');
 
 const DEFAULT_CONFIG = {
   startPin: 0,
@@ -47,6 +50,40 @@ function setBusyState(isBusy) {
   stopButton.disabled = isBusy || !isRunning;
   saveConfigButton.disabled = isBusy;
   resetConfigButton.disabled = isBusy;
+  loadPlanButton.disabled = isBusy;
+  goBrowseButton.disabled = isBusy;
+}
+
+function setPlanInfo(planName) {
+  const planClass = getPlanClass(planName);
+  planText.textContent = planName || 'ไม่พบข้อมูล';
+  planText.classList.remove(
+    'plan-mobile',
+    'plan-basic',
+    'plan-standard',
+    'plan-standard-ads',
+    'plan-premium',
+    'plan-unknown'
+  );
+  planText.classList.add(planClass);
+}
+
+function getPlanClass(planName) {
+  const normalized = String(planName || '').toLowerCase();
+
+  if (!normalized || normalized === 'ไม่พบข้อมูล' || normalized.includes('error') || normalized.includes('loading')) {
+    return 'plan-unknown';
+  }
+
+  if (normalized.includes('premium') || normalized.includes('พรีเมียม')) return 'plan-premium';
+  if (normalized.includes('standard with ads') || normalized.includes('standard ads') || normalized.includes('มาตรฐาน') && normalized.includes('โฆษณา')) {
+    return 'plan-standard-ads';
+  }
+  if (normalized.includes('standard') || normalized.includes('มาตรฐาน')) return 'plan-standard';
+  if (normalized.includes('basic') || normalized.includes('พื้นฐาน')) return 'plan-basic';
+  if (normalized.includes('mobile') || normalized.includes('มือถือ')) return 'plan-mobile';
+
+  return 'plan-unknown';
 }
 
 startButton.addEventListener('click', () => {
@@ -124,6 +161,64 @@ resetConfigButton.addEventListener('click', () => {
 toggleLogButton.addEventListener('click', () => {
   logArea.classList.toggle('hidden');
   toggleLogButton.setAttribute('aria-expanded', String(!logArea.classList.contains('hidden')));
+});
+
+loadPlanButton.addEventListener('click', () => {
+  setBusyState(true);
+  setPlanInfo('กำลังโหลด...');
+  appendLog('กำลังเปิดหน้า Netflix Account และดึงข้อมูลแพ็กเกจ');
+
+  chrome.runtime.sendMessage({action: 'getPlanInfo'}, (response) => {
+    setBusyState(false);
+
+    if (chrome.runtime.lastError) {
+      setPlanInfo('เกิดข้อผิดพลาด');
+      appendLog(`Error: ${chrome.runtime.lastError.message}`);
+      return;
+    }
+
+    if (!response || response.status === 'error' || response.status === 'no-target') {
+      const message = response?.message || 'ไม่พบแท็บ Netflix';
+      setPlanInfo('เกิดข้อผิดพลาด');
+      appendLog(message);
+      return;
+    }
+
+    if (response.status !== 'ok') {
+      const message = response.message || 'ไม่พบข้อมูลแพ็กเกจ';
+      setPlanInfo('ไม่พบข้อมูล');
+      appendLog(message);
+      return;
+    }
+
+    setPlanInfo(response.planName);
+    appendLog(`ดึงข้อมูลแพ็กเกจแล้ว: ${response.planName}`);
+  });
+});
+
+goBrowseButton.addEventListener('click', () => {
+  setBusyState(true);
+  appendLog('กำลังกลับไปหน้า Netflix Browse');
+
+  chrome.runtime.sendMessage({action: 'goToBrowse'}, (response) => {
+    setBusyState(false);
+
+    if (chrome.runtime.lastError) {
+      appendLog(`Error: ${chrome.runtime.lastError.message}`);
+      setStatus('เปิดหน้า Browse ไม่สำเร็จ', 'error');
+      return;
+    }
+
+    if (!response || response.status !== 'ok') {
+      const message = response?.message || 'ไม่สามารถเปิดหน้า Netflix Browse ได้';
+      appendLog(message);
+      setStatus(message, 'error');
+      return;
+    }
+
+    appendLog('เปิดหน้า Netflix Browse แล้ว');
+    setStatus('เปิดหน้า Browse แล้ว', 'success');
+  });
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

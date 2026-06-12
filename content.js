@@ -153,6 +153,131 @@ function stopAutoFillRoutine() {
   sendStatus('หยุดการทำงานแล้ว');
 }
 
+function getVisibleText(element) {
+  if (!element) return '';
+
+  const clone = element.cloneNode(true);
+  clone.querySelectorAll('script, style, noscript').forEach(node => node.remove());
+  return (clone.innerText || clone.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
+function collectPlanTexts() {
+  const selectors = [
+    '[data-uia*="plan" i]',
+    '[class*="plan" i]',
+    '[id*="plan" i]',
+    '[aria-label*="plan" i]',
+    '[aria-label*="แพ็กเกจ" i]'
+  ];
+
+  return Array.from(document.querySelectorAll(selectors.join(',')))
+    .map(getVisibleText)
+    .filter(text => text.length >= 3 && text.length <= 300);
+}
+
+function collectVisibleTexts() {
+  const candidates = new Set();
+  const selectors = [
+    'h1',
+    'h2',
+    'h3',
+    'p',
+    'span',
+    'div',
+    'button',
+    'a',
+    'li',
+    'td',
+    'th'
+  ];
+
+  for (const element of document.querySelectorAll(selectors.join(','))) {
+    const style = window.getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+
+    if (style.display === 'none' || style.visibility === 'hidden' || rect.width === 0 || rect.height === 0) {
+      continue;
+    }
+
+    const text = getVisibleText(element);
+    if (text.length >= 3 && text.length <= 300) {
+      candidates.add(text);
+    }
+  }
+
+  return Array.from(candidates);
+}
+
+function pickPlanName(texts) {
+  const patterns = [
+    {pattern: /\bStandard with ads\b/i, label: 'Standard with ads'},
+    {pattern: /\bBasic with ads\b/i, label: 'Basic with ads'},
+    {pattern: /\bPremium\b/i, label: 'Premium'},
+    {pattern: /\bStandard\b/i, label: 'Standard'},
+    {pattern: /\bBasic\b/i, label: 'Basic'},
+    {pattern: /\bMobile\b/i, label: 'Mobile'},
+    {pattern: /พรีเมียม/, label: 'Premium'},
+    {pattern: /มาตรฐาน.*โฆษณา|โฆษณา.*มาตรฐาน/, label: 'Standard with ads'},
+    {pattern: /พื้นฐาน.*โฆษณา|โฆษณา.*พื้นฐาน/, label: 'Basic with ads'},
+    {pattern: /มาตรฐาน/, label: 'Standard'},
+    {pattern: /พื้นฐาน/, label: 'Basic'},
+    {pattern: /มือถือ/, label: 'Mobile'}
+  ];
+
+  const sortedTexts = [...texts].sort((a, b) => a.length - b.length);
+
+  for (const {pattern, label} of patterns) {
+    for (const text of sortedTexts) {
+      if (pattern.test(text)) return label;
+    }
+  }
+
+  return null;
+}
+
+function getPlanInfoFromPage() {
+  const accountText = getVisibleText(document.body);
+  const planTexts = collectPlanTexts();
+  const visibleTexts = collectVisibleTexts();
+  const searchTexts = [...planTexts, ...visibleTexts, accountText];
+  const planName = pickPlanName(searchTexts);
+  const isAccountPage = /\/account/i.test(location.pathname);
+
+  if (!planName) {
+    return {
+      status: 'not-found',
+      message: isAccountPage
+        ? 'ไม่พบข้อมูลแพ็กเกจบนหน้า Account นี้'
+        : 'กรุณาเปิดหน้า netflix.com/account ก่อน แล้วลองอีกครั้ง'
+    };
+  }
+
+  return {
+    status: 'ok',
+    planName,
+    pageUrl: location.href
+  };
+}
+
+function waitForPlanInfo(timeoutMs = 10000) {
+  const startedAt = Date.now();
+
+  return new Promise((resolve) => {
+    const check = () => {
+      const result = getPlanInfoFromPage();
+
+      if (result.status === 'ok' || Date.now() - startedAt >= timeoutMs) {
+        resolve(result);
+        return;
+      }
+
+      setTimeout(check, 500);
+    };
+
+    check();
+  });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.command === 'startAutoFill') {
     startAutoFillRoutine(message.config);
@@ -160,5 +285,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.command === 'stopAutoFill') {
     stopAutoFillRoutine();
     sendResponse({status: 'stopped'});
+  } else if (message.command === 'getPlanInfo') {
+    waitForPlanInfo().then(sendResponse);
+    return true;
   }
 });
