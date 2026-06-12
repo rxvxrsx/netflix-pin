@@ -2,6 +2,7 @@ const statusText = document.getElementById('statusText');
 const currentPinText = document.getElementById('currentPinText');
 const logArea = document.getElementById('log');
 const startPinInput = document.getElementById('startPin');
+const sortOrderSelect = document.getElementById('sortOrder');
 const keyDelayInput = document.getElementById('keyDelay');
 const codeDelayInput = document.getElementById('codeDelay');
 const saveConfigButton = document.getElementById('saveConfig');
@@ -12,6 +13,7 @@ const toggleLogButton = document.getElementById('toggleLog');
 
 const DEFAULT_CONFIG = {
   startPin: 0,
+  sortOrder: 'asc',
   keyDelay: 80,
   codeDelay: 120
 };
@@ -73,7 +75,7 @@ startButton.addEventListener('click', () => {
     setRunningState(true);
     setStatus(`กำลังเริ่มจาก ${formattedPin}`, 'running');
     setCurrentPin(formattedPin);
-    appendLog(`ส่งคำสั่งเริ่มไปยัง Netflix (start=${formattedPin}, keyDelay=${config.keyDelay}, codeDelay=${config.codeDelay})`);
+    appendLog(`ส่งคำสั่งเริ่มไปยัง Netflix (start=${formattedPin}, order=${getSortOrderLabel(config.sortOrder)}, keyDelay=${config.keyDelay}, codeDelay=${config.codeDelay})`);
   });
 });
 
@@ -106,7 +108,7 @@ stopButton.addEventListener('click', () => {
 saveConfigButton.addEventListener('click', () => {
   const config = getConfigFromInputs();
   chrome.storage.local.set({netflixPinConfig: config}, () => {
-    appendLog(`บันทึก config เรียบร้อย (start=${formatPin(config.startPin)}, keyDelay=${config.keyDelay}, codeDelay=${config.codeDelay})`);
+    appendLog(`บันทึก config เรียบร้อย (start=${formatPin(config.startPin)}, order=${getSortOrderLabel(config.sortOrder)}, keyDelay=${config.keyDelay}, codeDelay=${config.codeDelay})`);
     setStatus('บันทึกค่าแล้ว', 'success');
   });
 });
@@ -158,6 +160,7 @@ function getStatusType(status) {
 function getConfigFromInputs() {
   return {
     startPin: clampNumber(startPinInput.value, 0, 9999, 0),
+    sortOrder: sortOrderSelect.value === 'desc' ? 'desc' : 'asc',
     keyDelay: clampNumber(keyDelayInput.value, 10, 999999, 80),
     codeDelay: clampNumber(codeDelayInput.value, 10, 999999, 120)
   };
@@ -171,8 +174,13 @@ function clampNumber(value, min, max, fallback) {
 
 function setInputsFromConfig(config) {
   startPinInput.value = config.startPin;
+  sortOrderSelect.value = config.sortOrder === 'desc' ? 'desc' : 'asc';
   keyDelayInput.value = config.keyDelay;
   codeDelayInput.value = config.codeDelay;
+}
+
+function getSortOrderLabel(sortOrder) {
+  return sortOrder === 'desc' ? 'มากไปน้อย' : 'น้อยไปมาก';
 }
 
 function loadConfig() {

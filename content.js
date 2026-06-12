@@ -24,8 +24,10 @@ function startAutoFillRoutine(config = {}) {
 
   const startPin = Number.isFinite(Number(config.startPin)) ? parseInt(config.startPin, 10) : 0;
   window.currentPin = Math.min(Math.max(isNaN(startPin) ? 0 : startPin, 0), 9999);
+  const sortOrder = config.sortOrder === 'desc' ? 'desc' : 'asc';
+  const pinStep = sortOrder === 'desc' ? -1 : 1;
   window.isRunning = true;
-  sendStatus(`เริ่มทำงานจาก PIN: ${formatPin(window.currentPin)}`, formatPin(window.currentPin));
+  sendStatus(`เริ่มทำงานจาก PIN: ${formatPin(window.currentPin)} (${getSortOrderLabel(sortOrder)})`, formatPin(window.currentPin));
 
   let keyDelay = Number.isFinite(Number(config.keyDelay)) ? parseInt(config.keyDelay, 10) : 80;
   let codeDelay = Number.isFinite(Number(config.codeDelay)) ? parseInt(config.codeDelay, 10) : 120;
@@ -75,7 +77,7 @@ function startAutoFillRoutine(config = {}) {
       'input[aria-label*="pin"]'
     ];
 
-    while (window.currentPin <= 9999 && window.isRunning) {
+    while (isPinInRange(window.currentPin) && window.isRunning) {
       const pinString = formatPin(window.currentPin);
       console.log(`รอบที่ ${window.currentPin}: กำลังทดลองรหัส ${pinString}`);
       sendStatus(`กำลังทดลองรหัส PIN: ${pinString}`, pinString);
@@ -124,17 +126,25 @@ function startAutoFillRoutine(config = {}) {
         console.log('หน้าเปลี่ยนไม่ทันหรือยังไม่แจ้งผล; ยังคงลองต่อ');
       }
 
-      window.currentPin++;
+      window.currentPin += pinStep;
     }
 
-    if (window.currentPin > 9999) {
-      console.log('ลองครบทุก PIN จนถึง 9999');
+    if (!isPinInRange(window.currentPin)) {
+      console.log('ลองครบทุก PIN ตามลำดับที่เลือกแล้ว');
       sendStatus('ลองครบทุก PIN แล้ว');
       window.isRunning = false;
     }
   }
 
   startAutoFill();
+}
+
+function isPinInRange(pin) {
+  return pin >= 0 && pin <= 9999;
+}
+
+function getSortOrderLabel(sortOrder) {
+  return sortOrder === 'desc' ? 'มากไปน้อย' : 'น้อยไปมาก';
 }
 
 function stopAutoFillRoutine() {
