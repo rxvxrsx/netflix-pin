@@ -11,7 +11,8 @@ const keyDelayInput = document.getElementById('keyDelay');
 const codeDelayInput = document.getElementById('codeDelay');
 const saveConfigButton = document.getElementById('saveConfig');
 const resetConfigButton = document.getElementById('resetConfig');
-const startButton = document.getElementById('start');
+const startResumeButton = document.getElementById('startResume');
+const startNewButton = document.getElementById('startNew');
 const stopButton = document.getElementById('stop');
 const toggleLogButton = document.getElementById('toggleLog');
 const loadPlanButton = document.getElementById('loadPlan');
@@ -79,14 +80,16 @@ function getPlanClass(planName) {
 
 function setRunningState(nextIsRunning) {
   isRunning = nextIsRunning;
-  startButton.disabled = isRunning;
+  startResumeButton.disabled = isRunning;
+  startNewButton.disabled = isRunning;
   stopButton.disabled = !isRunning;
-  if (isRunning) startButton.classList.remove('pulse');
-  else startButton.classList.add('pulse');
+  if (isRunning) startResumeButton.classList.remove('pulse');
+  else startResumeButton.classList.add('pulse');
 }
 
 function setBusyState(isBusy) {
-  startButton.disabled = isBusy || isRunning;
+  startResumeButton.disabled = isBusy || isRunning;
+  startNewButton.disabled = isBusy || isRunning;
   stopButton.disabled = isBusy || !isRunning;
   saveConfigButton.disabled = isBusy;
   resetConfigButton.disabled = isBusy;
@@ -94,8 +97,13 @@ function setBusyState(isBusy) {
   goBrowseButton.disabled = isBusy;
 }
 
-startButton.addEventListener('click', function() {
+// Shared start logic
+function doStart(label, forceReset) {
   var config = getConfigFromInputs();
+  if (forceReset) {
+    // Override startPin to use the configured value (reset to beginning)
+    config.startPin = clampNumber(startPinInput.value, 0, 9999, 0);
+  }
   var formattedPin = formatPin(config.startPin);
   setBusyState(true);
   setStatus('\u0E01\u0E33\u0E25\u0E31\u0E07\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E21\u0E15\u0E48\u0E2D...', 'running');
@@ -115,8 +123,16 @@ startButton.addEventListener('click', function() {
     setRunningState(true);
     setStatus('\u0E01\u0E33\u0E25\u0E31\u0E07\u0E23\u0E31\u0E19', 'running');
     setCurrentPin(formattedPin);
-    appendLog('\u25B6 \u0E40\u0E23\u0E34\u0E48\u0E21 PIN ' + formattedPin + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
+    appendLog(label + ' PIN ' + formattedPin + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
   });
+}
+
+startResumeButton.addEventListener('click', function() {
+  doStart('\u25B6 \u0E17\u0E33\u0E07\u0E32\u0E19\u0E15\u0E48\u0E2D', false);
+});
+
+startNewButton.addEventListener('click', function() {
+  doStart('\uD83D\uDD04 \u0E40\u0E23\u0E34\u0E48\u0E21\u0E43\u0E2B\u0E21\u0E48', true);
 });
 
 stopButton.addEventListener('click', function() {
