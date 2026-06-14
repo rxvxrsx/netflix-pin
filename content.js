@@ -180,6 +180,7 @@ async function mainLoop(config) {
       const urlInputs = findPinInputs();
       if (urlInputs.length === 0) {
         // Still no inputs after re-check → might be on a different page
+        window.currentPin = currentPin;
         sendStatus('ไม่พบหน้าจอกรอก PIN — อาจเข้าสู่ระบบแล้วหรือหน้าเปลี่ยน', pinString);
         window.isRunning = false;
         break;
