@@ -1,3 +1,4 @@
+// Credit: REVERSE
 console.log('Netflix PIN Auto-Fill content.js loaded (React compatible)');
 
 function formatPin(num) {

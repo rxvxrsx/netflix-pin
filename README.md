@@ -1,5 +1,7 @@
 # 🔐 Netflix PIN Auto-Fill
 
+> **Created by: REVERSE**
+
 > Chrome Extension สำหรับลอง PIN บนหน้า Netflix โดยอัตโนมัติ  
 > ทำงานผ่าน **Chrome Side Panel** — สวยงาม ใช้ง่าย ไม่เกะกะ
 

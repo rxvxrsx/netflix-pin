@@ -1,3 +1,4 @@
+// Credit: REVERSE
 const statusText = document.getElementById('statusText');
 const statusItem = document.getElementById('statusItem');
 const planText = document.getElementById('planText');
