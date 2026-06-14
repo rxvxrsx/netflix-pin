@@ -11,8 +11,7 @@ const keyDelayInput = document.getElementById('keyDelay');
 const codeDelayInput = document.getElementById('codeDelay');
 const saveConfigButton = document.getElementById('saveConfig');
 const resetConfigButton = document.getElementById('resetConfig');
-const startResumeButton = document.getElementById('startResume');
-const startNewButton = document.getElementById('startNew');
+const startButton = document.getElementById('start');
 const stopButton = document.getElementById('stop');
 const toggleLogButton = document.getElementById('toggleLog');
 const loadPlanButton = document.getElementById('loadPlan');
@@ -26,7 +25,6 @@ const DEFAULT_CONFIG = {
 };
 
 let isRunning = false;
-let savedStartPin = 0;
 
 function appendLog(message) {
   const time = new Date().toLocaleTimeString();
@@ -81,16 +79,14 @@ function getPlanClass(planName) {
 
 function setRunningState(nextIsRunning) {
   isRunning = nextIsRunning;
-  startResumeButton.disabled = isRunning;
-  startNewButton.disabled = isRunning;
+  startButton.disabled = isRunning;
   stopButton.disabled = !isRunning;
-  if (isRunning) startResumeButton.classList.remove('pulse');
-  else startResumeButton.classList.add('pulse');
+  if (isRunning) startButton.classList.remove('pulse');
+  else startButton.classList.add('pulse');
 }
 
 function setBusyState(isBusy) {
-  startResumeButton.disabled = isBusy || isRunning;
-  startNewButton.disabled = isBusy || isRunning;
+  startButton.disabled = isBusy || isRunning;
   stopButton.disabled = isBusy || !isRunning;
   saveConfigButton.disabled = isBusy;
   resetConfigButton.disabled = isBusy;
@@ -98,13 +94,8 @@ function setBusyState(isBusy) {
   goBrowseButton.disabled = isBusy;
 }
 
-// Shared start logic
-function doStart(label, forceReset) {
+startButton.addEventListener('click', function() {
   var config = getConfigFromInputs();
-  if (forceReset) {
-    // Reset to the originally configured/saved start PIN, not the current input value
-    config.startPin = savedStartPin;
-  }
   var formattedPin = formatPin(config.startPin);
   setBusyState(true);
   setStatus('\u0E01\u0E33\u0E25\u0E31\u0E07\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E21\u0E15\u0E48\u0E2D...', 'running');
@@ -124,16 +115,8 @@ function doStart(label, forceReset) {
     setRunningState(true);
     setStatus('\u0E01\u0E33\u0E25\u0E31\u0E07\u0E23\u0E31\u0E19', 'running');
     setCurrentPin(formattedPin);
-    appendLog(label + ' PIN ' + formattedPin + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
+    appendLog('\u25B6 \u0E17\u0E33\u0E07\u0E32\u0E19\u0E15\u0E48\u0E2D PIN ' + formattedPin + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
   });
-}
-
-startResumeButton.addEventListener('click', function() {
-  doStart('\u25B6 \u0E17\u0E33\u0E07\u0E32\u0E19\u0E15\u0E48\u0E2D', false);
-});
-
-startNewButton.addEventListener('click', function() {
-  doStart('\uD83D\uDD04 \u0E40\u0E23\u0E34\u0E48\u0E21\u0E43\u0E2B\u0E21\u0E48', true);
 });
 
 stopButton.addEventListener('click', function() {
@@ -167,7 +150,6 @@ stopButton.addEventListener('click', function() {
 
 saveConfigButton.addEventListener('click', function() {
   var config = getConfigFromInputs();
-  savedStartPin = config.startPin;
   chrome.storage.local.set({netflixPinConfig: config}, function() {
     appendLog('\uD83D\uDCBE \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01: PIN=' + formatPin(config.startPin) + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
     setStatus('\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E41\u0E25\u0E49\u0E27', 'success');
@@ -293,7 +275,6 @@ function getSortOrderLabel(sortOrder) {
 function loadConfig() {
   chrome.storage.local.get(['netflixPinConfig'], function(result) {
     var config = result.netflixPinConfig || DEFAULT_CONFIG;
-    savedStartPin = config.startPin;
     setInputsFromConfig(config);
     setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'idle');
     setRunningState(false);
