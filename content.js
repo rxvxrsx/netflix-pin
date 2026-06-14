@@ -283,8 +283,10 @@ function startAutoFillRoutine(config = {}) {
 
 function stopAutoFillRoutine() {
   window.isRunning = false;
-  console.log('หยุดโปรแกรม');
+  const lastPin = window.currentPin;
+  console.log('หยุดโปรแกรม ที่ PIN:', lastPin);
   sendStatus('หยุดการทำงานแล้ว');
+  return lastPin;
 }
 
 /* ─── Plan Info ─── */
@@ -392,8 +394,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     startAutoFillRoutine(message.config);
     sendResponse({status: 'started'});
   } else if (message.command === 'stopAutoFill') {
-    stopAutoFillRoutine();
-    sendResponse({status: 'stopped'});
+    const lastPin = stopAutoFillRoutine();
+    sendResponse({status: 'stopped', currentPin: lastPin});
   } else if (message.command === 'getPlanInfo') {
     waitForPlanInfo().then(sendResponse);
     return true;

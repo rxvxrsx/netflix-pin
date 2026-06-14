@@ -211,6 +211,7 @@ function sendCommand(tabId, command, payload, sendResponse) {
     sendResponse({
       status: contentResponse?.status || 'error',
       tabId,
+      currentPin: contentResponse?.currentPin,
       message: !contentResponse?.status ? 'ไม่ได้รับการตอบกลับจากแท็บ Netflix' : undefined
     });
   });

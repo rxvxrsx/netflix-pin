@@ -137,7 +137,14 @@ stopButton.addEventListener('click', function() {
     }
     setRunningState(false);
     setStatus('\u0E2B\u0E22\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27', 'idle');
-    appendLog('\u23F9 \u0E2B\u0E22\u0E38\u0E14\u0E17\u0E33\u0E07\u0E32\u0E19');
+    if (response && response.currentPin !== undefined) {
+      var nextPin = Math.min(response.currentPin, 9999);
+      startPinInput.value = nextPin;
+      setCurrentPin(formatPin(nextPin));
+      appendLog('\u23F9 \u0E2B\u0E22\u0E38\u0E14\u0E17\u0E35\u0E48 PIN: ' + formatPin(nextPin) + ' | \u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E48\u0E2D\u0E08\u0E32\u0E01\u0E15\u0E23\u0E07\u0E19\u0E35\u0E49');
+    } else {
+      appendLog('\u23F9 \u0E2B\u0E22\u0E38\u0E14\u0E17\u0E33\u0E07\u0E32\u0E19');
+    }
   });
 });
 
