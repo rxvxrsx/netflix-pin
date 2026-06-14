@@ -208,8 +208,9 @@ function sendCommand(tabId, command, payload, sendResponse) {
     }
 
     sendResponse({
-      status: command === 'startAutoFill' ? 'started' : 'stopped',
-      tabId
+      status: contentResponse?.status || 'error',
+      tabId,
+      message: !contentResponse?.status ? 'ไม่ได้รับการตอบกลับจากแท็บ Netflix' : undefined
     });
   });
 }

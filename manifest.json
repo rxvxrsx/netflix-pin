@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Netflix PIN Auto-Fill",
-  "version": "1.0",
+  "version": "2.0",
   "description": "ตั้งค่าการกรอก PIN ของ Netflix อัตโนมัติ",
   "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
   "host_permissions": [
@@ -21,7 +21,7 @@
     {
       "matches": ["https://*.netflix.com/*", "https://netflix.com/*"],
       "js": ["content.js"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
   ]
 }
