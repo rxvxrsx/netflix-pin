@@ -163,8 +163,11 @@ async function mainLoop(config) {
   sendStatus(`เริ่มทำงานจาก PIN: ${formatPin(currentPin)} (${getSortOrderLabel(sortOrder)})`, formatPin(currentPin));
   console.log(`Config: keyDelay=${keyDelay}ms, codeDelay=${codeDelay}ms, sort=${sortOrder}, start=${currentPin}`);
 
+  window.currentPin = currentPin;
+
   while (isPinInRange(currentPin) && window.isRunning) {
     const pinString = formatPin(currentPin);
+    window.currentPin = currentPin;
     console.log(`รอบที่ ${currentPin}: กำลังทดลองรหัส ${pinString}`);
     sendStatus('กำลังทดลองรหัส', pinString);
 
