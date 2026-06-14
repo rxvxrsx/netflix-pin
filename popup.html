@@ -18,8 +18,8 @@
       --green: #21c16b;
       --blue: #4da3ff;
       --gold: #f0a840;
-      --radius: 10px;
-      --radius-sm: 6px;
+      --radius: 12px;
+      --radius-sm: 8px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,11 +35,11 @@
       flex-direction: column;
     }
 
-    /* ── Hero (compact) ── */
+    /* ── Hero ── */
     .hero {
       flex-shrink: 0;
       position: relative;
-      padding: 10px 14px;
+      padding: 12px 16px;
       background:
         radial-gradient(ellipse at 85% 30%, var(--red-glow), transparent 60%),
         linear-gradient(135deg, #1a1020 0%, #11131d 60%, #0e121c 100%);
@@ -63,109 +63,74 @@
       z-index: 1;
     }
 
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .logo-area { display: flex; align-items: center; gap: 8px; }
 
     .logo-icon {
-      width: 32px;
-      height: 32px;
+      width: 34px; height: 34px;
       border-radius: 8px;
       background: linear-gradient(145deg, var(--red), #9e030f);
-      display: grid;
-      place-items: center;
-      font-size: 17px;
-      font-weight: 900;
-      color: #fff;
+      display: grid; place-items: center;
+      font-size: 18px; font-weight: 900; color: #fff;
       box-shadow: 0 6px 16px var(--red-glow);
     }
 
-    .hero-title {
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: -0.2px;
-      line-height: 1;
-    }
-
-    .hero-sub {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 500;
-    }
+    .hero-title { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; line-height: 1; }
+    .hero-sub { color: var(--muted); font-size: 10px; font-weight: 500; }
 
     .version-tag {
-      padding: 2px 8px;
-      border-radius: 999px;
+      padding: 3px 10px; border-radius: 999px;
       background: rgba(77, 163, 255, 0.12);
       border: 1px solid rgba(77, 163, 255, 0.25);
-      color: #93c5ff;
-      font-size: 9px;
-      font-weight: 700;
-      position: relative;
-      z-index: 1;
+      color: #93c5ff; font-size: 10px; font-weight: 700;
+      position: relative; z-index: 1;
     }
 
-    /* ── Main content area (fills remaining space, no scroll) ── */
+    /* ── Main ── */
     .main {
       flex: 1;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       overflow: hidden;
-      padding: 8px 12px 0 12px;
+      padding: 10px 14px 0 14px;
     }
 
-    /* ── Config Row ── */
-    .config-section {
-      flex-shrink: 0;
-    }
-
+    /* ── Section Label ── */
     .section-label {
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
       color: var(--muted);
       margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      display: flex; align-items: center; gap: 5px;
     }
 
     .section-label::before {
       content: '';
       display: inline-block;
-      width: 3px;
-      height: 10px;
+      width: 3px; height: 12px;
       border-radius: 2px;
       background: var(--red);
     }
 
+    /* ── Config ── */
+    .config-section { flex-shrink: 0; }
+
     .config-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 6px;
+      gap: 8px;
+      margin-bottom: 8px;
     }
 
-    .field { display: flex; flex-direction: column; gap: 2px; }
+    .field { display: flex; flex-direction: column; gap: 3px; }
 
-    .field label {
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--muted);
-    }
+    .field label { font-size: 10px; font-weight: 600; color: var(--muted); }
 
     .field input, .field select {
-      height: 30px;
-      padding: 0 8px;
+      height: 34px; padding: 0 10px;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       background: #0f1119;
       color: var(--text);
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px; font-weight: 600;
       font-family: inherit;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
@@ -176,10 +141,10 @@
       background-image:
         linear-gradient(45deg, transparent 50%, var(--muted) 50%),
         linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-      background-position: calc(100% - 12px) 12px, calc(100% - 7px) 12px;
+      background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px;
       background-size: 5px 5px, 5px 5px;
       background-repeat: no-repeat;
-      padding-right: 24px;
+      padding-right: 26px;
     }
 
     .field input:focus, .field select:focus {
@@ -189,25 +154,16 @@
     }
 
     /* ── Buttons ── */
-    .btn-row {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .btn-row { display: flex; gap: 8px; flex-shrink: 0; }
 
     button {
-      flex: 1;
-      height: 30px;
+      flex: 1; height: 36px;
       border: 1px solid transparent;
       border-radius: var(--radius-sm);
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 12px; font-weight: 700;
       font-family: inherit;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
       transition: all 0.12s ease;
       color: #fff;
       white-space: nowrap;
@@ -215,65 +171,30 @@
 
     button:hover { filter: brightness(1.1); transform: translateY(-1px); }
     button:active { transform: translateY(0); filter: brightness(0.95); }
-    button:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      filter: grayscale(0.4);
-      transform: none !important;
-    }
+    button:disabled { opacity: 0.45; cursor: not-allowed; filter: grayscale(0.4); transform: none !important; }
     button:disabled:hover { filter: grayscale(0.4); transform: none !important; }
 
     .btn-primary {
       background: linear-gradient(135deg, #21c16b, #15834c);
       box-shadow: 0 4px 12px rgba(33, 193, 107, 0.18);
     }
-
     .btn-danger {
       background: linear-gradient(135deg, #e50914, #a30610);
       box-shadow: 0 4px 12px rgba(229, 9, 20, 0.18);
     }
-
-    .btn-outline {
-      background: transparent;
-      border-color: var(--border);
-      color: #c8cfdd;
-    }
-
+    .btn-outline { background: transparent; border-color: var(--border); color: #c8cfdd; }
     .btn-outline:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.2); }
-
-    .btn-subtle {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: var(--border);
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 10px;
-    }
-
+    .btn-subtle { background: rgba(255, 255, 255, 0.04); border-color: var(--border); color: var(--muted); font-weight: 600; font-size: 11px; }
     .btn-subtle:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
 
-    .btn-sm {
-      font-size: 10px;
-      height: 28px;
-    }
+    /* ── Divider ── */
+    .divider { flex-shrink: 0; height: 1px; background: var(--border); margin: 8px 0; }
 
-    /* ─── Divider ─── */
-    .divider {
-      flex-shrink: 0;
-      height: 1px;
-      background: var(--border);
-      margin: 6px 0;
-    }
-
-    /* ─── Status + Plan Row ─── */
-    .info-row {
-      flex-shrink: 0;
-      display: flex;
-      gap: 6px;
-    }
+    /* ── Status ── */
+    .info-row { flex-shrink: 0; display: flex; gap: 8px; }
 
     .info-item {
-      flex: 1;
-      padding: 6px 8px;
+      flex: 1; padding: 8px 10px;
       border-radius: var(--radius-sm);
       background: var(--surface-2);
       border: 1px solid var(--border);
@@ -282,62 +203,43 @@
     }
 
     .info-item .info-label {
-      font-size: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.4px;
       color: var(--muted);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .info-item .info-value {
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 13px; font-weight: 800;
       font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     .info-item.active { border-color: var(--blue); background: rgba(77, 163, 255, 0.08); }
     .info-item.active .info-value { color: var(--blue); }
-
     .info-item.success { border-color: var(--green); background: rgba(33, 193, 107, 0.08); }
     .info-item.success .info-value { color: var(--green); }
-
     .info-item.warn { border-color: var(--gold); background: rgba(240, 168, 64, 0.08); }
     .info-item.warn .info-value { color: var(--gold); }
 
-    /* ─── PIN Display (inline in status area) ─── */
+    /* ── PIN ── */
     .pin-row {
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 0;
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0;
     }
 
-    .pin-row-label {
-      font-size: 9px;
-      font-weight: 700;
-      color: var(--muted);
-    }
+    .pin-row-label { font-size: 10px; font-weight: 700; color: var(--muted); }
 
-    .pin-display {
-      display: inline-flex;
-      gap: 3px;
-    }
+    .pin-display { display: inline-flex; gap: 4px; }
 
     .pin-digit {
-      width: 22px;
-      height: 28px;
-      border-radius: 4px;
+      width: 26px; height: 34px;
+      border-radius: 5px;
       background: rgba(77, 163, 255, 0.1);
       border: 1px solid rgba(77, 163, 255, 0.2);
-      display: grid;
-      place-items: center;
-      font-size: 14px;
-      font-weight: 900;
+      display: grid; place-items: center;
+      font-size: 16px; font-weight: 900;
       font-variant-numeric: tabular-nums;
       color: var(--blue);
     }
@@ -348,81 +250,67 @@
       color: var(--muted);
     }
 
-    /* ─── Log Section (fills remaining space) ─── */
+    /* ── Log (compact) ── */
     .log-section {
       flex: 1;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       min-height: 0;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .log-header-row {
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-      min-height: 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 3px;
+      min-height: 20px;
     }
 
-    .log-header-row .section-label { margin-bottom: 0; }
+    .log-header-row .section-label { margin-bottom: 0; font-size: 9px; }
     .log-header-row .section-label::before { display: none; }
 
     .btn-icon {
-      width: 22px;
-      height: 22px;
-      min-width: 22px;
-      flex: 0 0 22px;
-      padding: 0;
-      border-radius: 5px;
+      width: 20px; height: 20px; min-width: 20px; flex: 0 0 20px;
+      padding: 0; border-radius: 4px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
-      font-size: 10px;
-      line-height: 1;
+      font-size: 9px; line-height: 1;
     }
 
     .log-box {
       flex: 1;
       min-height: 0;
-      padding: 6px 8px;
+      max-height: 100px;
+      padding: 5px 7px;
       border-radius: var(--radius-sm);
       background: #06070d;
       border: 1px solid rgba(255, 255, 255, 0.05);
       font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
-      font-size: 9px;
-      line-height: 1.5;
+      font-size: 9px; line-height: 1.45;
       color: #8992a5;
-      white-space: pre-wrap;
-      word-break: break-word;
+      white-space: pre-wrap; word-break: break-word;
       overflow-y: auto;
       margin: 0;
-      transition: flex 0.2s ease, padding 0.2s ease, opacity 0.2s ease, border-width 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .log-box.collapsed {
       flex: 0 0 0;
-      padding: 0;
-      border-width: 0;
-      opacity: 0;
-      overflow: hidden;
-      min-height: 0;
+      min-height: 0; max-height: 0;
+      padding: 0; border-width: 0; opacity: 0; overflow: hidden;
     }
 
     .log-box::-webkit-scrollbar { width: 3px; }
     .log-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-    /* ─── Pulse ─── */
+    /* ── Pulse ── */
     @keyframes pulse-ring {
       0%, 100% { box-shadow: 0 0 0 0 rgba(77, 163, 255, 0.3); }
-      50% { box-shadow: 0 0 0 5px rgba(77, 163, 255, 0); }
+      50% { box-shadow: 0 0 0 6px rgba(77, 163, 255, 0); }
     }
-
     .pulse { animation: pulse-ring 2s ease-in-out infinite; }
   </style>
 </head>
 <body>
-  <!-- Hero (compact) -->
   <div class="hero">
     <div class="hero-row">
       <div class="logo-area">
@@ -437,7 +325,7 @@
   </div>
 
   <div class="main">
-    <!-- ═══ Configuration ═══ -->
+    <!-- Config -->
     <div class="config-section">
       <div class="section-label">⚙️ ตั้งค่า</div>
       <div class="config-grid">
@@ -462,20 +350,20 @@
         </div>
       </div>
       <div class="btn-row">
-        <button id="saveConfig" class="btn-outline btn-sm">💾 บันทึก</button>
-        <button id="resetConfig" class="btn-subtle btn-sm">↺ รีเซ็ต</button>
+        <button id="saveConfig" class="btn-outline">💾 บันทึกค่า</button>
+        <button id="resetConfig" class="btn-subtle">↺ รีเซ็ต</button>
       </div>
     </div>
 
-    <!-- ═══ Controls ═══ -->
-    <div class="btn-row" style="margin-top:4px;">
+    <!-- Controls -->
+    <div class="btn-row" style="margin-top:6px;">
       <button id="start" class="btn-primary pulse">▶ เริ่มทำงาน</button>
       <button id="stop" class="btn-danger" disabled>⏹ หยุด</button>
     </div>
 
     <div class="divider"></div>
 
-    <!-- ═══ Status + PIN ═══ -->
+    <!-- Status -->
     <div class="info-row">
       <div class="info-item" id="statusItem">
         <div class="info-label">สถานะ</div>
@@ -498,11 +386,11 @@
     </div>
 
     <div class="btn-row">
-      <button id="loadPlan" class="btn-subtle btn-sm">📋 แพ็กเกจ</button>
-      <button id="goBrowse" class="btn-subtle btn-sm">🌐 Browse</button>
+      <button id="loadPlan" class="btn-subtle">📋 ดึงข้อมูลแพ็กเกจ</button>
+      <button id="goBrowse" class="btn-subtle">🌐 กลับ Browse</button>
     </div>
 
-    <!-- ═══ Log ═══ -->
+    <!-- Log -->
     <div class="log-section">
       <div class="log-header-row">
         <span class="section-label">📝 บันทึก</span>
