@@ -1,9 +1,9 @@
 {
-  "_credit": "REVERSE",
   "manifest_version": 3,
   "name": "Netflix PIN Auto-Fill",
   "version": "2.0",
-  "description": "ตั้งค่าการกรอก PIN ของ Netflix อัตโนมัติ",
+  "description": "ตั้งค่าการกรอก PIN ของ Netflix อัตโนมัติ | Credit: REVERSE",
+  "author": "REVERSE",
   "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
   "host_permissions": [
     "https://*.netflix.com/*",
