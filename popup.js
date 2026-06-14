@@ -136,7 +136,7 @@ stopButton.addEventListener('click', function() {
       return;
     }
     setRunningState(false);
-    setStatus('\u0E2B\u0E22\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27', 'idle');
+    setStatus('\u0E2B\u0E22\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27', 'error');
     if (response && response.currentPin !== undefined) {
       var nextPin = Math.min(response.currentPin, 9999);
       startPinInput.value = nextPin;
@@ -272,7 +272,7 @@ function loadConfig() {
   chrome.storage.local.get(['netflixPinConfig'], function(result) {
     var config = result.netflixPinConfig || DEFAULT_CONFIG;
     setInputsFromConfig(config);
-    setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'idle');
+    setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'success');
     setRunningState(false);
     setCurrentPin('----');
     appendLog('\u2705 \u0E42\u0E2B\u0E25\u0E14 config \u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19');
