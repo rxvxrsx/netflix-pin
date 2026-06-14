@@ -166,7 +166,7 @@ async function mainLoop(config) {
   while (isPinInRange(currentPin) && window.isRunning) {
     const pinString = formatPin(currentPin);
     console.log(`รอบที่ ${currentPin}: กำลังทดลองรหัส ${pinString}`);
-    sendStatus(`กำลังทดลองรหัส PIN: ${pinString}`, pinString);
+    sendStatus('กำลังทดลองรหัส', pinString);
 
     // Wait for pin inputs to be available
     const pinInputs = await waitForPinInputs(5000);
