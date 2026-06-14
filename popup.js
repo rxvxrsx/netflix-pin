@@ -61,9 +61,8 @@ function setCurrentPin(pin) {
 function setPlanInfo(planName) {
   var planClass = getPlanClass(planName);
   planText.textContent = planName || '\u0E44\u0E21\u0E48\u0E1E\u0E1A\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25';
-  planItem.classList.remove('active', 'success', 'warn');
-  if (planClass === 'plan-premium') planItem.classList.add('warn');
-  else if (planClass !== 'plan-unknown') planItem.classList.add('active');
+  planItem.classList.remove('plan-premium', 'plan-standard', 'plan-standard-ads', 'plan-basic', 'plan-mobile', 'plan-unknown', 'active', 'success', 'warn');
+  planItem.classList.add(planClass);
 }
 
 function getPlanClass(planName) {
