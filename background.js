@@ -193,9 +193,15 @@ function openNetflixBrowse(sendResponse) {
 function sendCommand(tabId, command, payload, sendResponse) {
   chrome.tabs.sendMessage(tabId, {command, ...payload}, (contentResponse) => {
     if (chrome.runtime.lastError) {
+      var errMsg = chrome.runtime.lastError.message || '';
+      var friendlyMsg = errMsg.includes('Receiving end does not exist')
+        ? 'ไม่พบ Content Script บนแท็บนี้ — กรุณารีเฟรชหน้า Netflix (F5) แล้วลองใหม่'
+        : errMsg.includes('Could not establish connection')
+        ? 'ไม่สามารถเชื่อมต่อกับแท็บ Netflix — อาจต้องรีเฟรชหน้า'
+        : 'เกิดข้อผิดพลาด: ' + errMsg;
       sendResponse({
         status: 'error',
-        message: chrome.runtime.lastError.message
+        message: friendlyMsg
       });
       return;
     }
