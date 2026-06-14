@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="netflix-pin.png?v=2" alt="Netflix PIN" width="512" height="512" style="border-radius: 20px;">
+  <img src="netflix-pin.png?v=2" alt="Netflix PIN" width="256" height="256" style="border-radius: 20px;">
 </p>
 
 # 🔐 Netflix PIN Auto-Fill
