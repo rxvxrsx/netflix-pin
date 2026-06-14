@@ -23,7 +23,7 @@
 | 📊 **สถานะ** | แสดงสถานะปัจจุบัน, PIN ล่าสุด, และชื่อแพ็กเกจ |
 | 📝 **บันทึก** | Log การทำงานทั้งหมด พร้อมเปิด/ปิดได้ |
 | 📋 **แพ็กเกจ** | ดึงข้อมูลแพ็กเกจ Netflix จากหน้า Account อัตโนมัติ |
-| 🌐 **Browse** | ปุ่มกลับไปหน้า Netflix Browse ทันที |
+| 🌐 **Browse** | ปุ่มไปหน้า Netflix Browse ทันที |
 | 🎨 **Dark UI** | ดีไซน์สไตล์ Netflix — Dark theme, Glow effects |
 | ⚡ **React Compat** | รองรับหน้า Netflix ที่ใช้ React (native value setter) |
 
