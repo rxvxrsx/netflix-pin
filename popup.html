@@ -185,6 +185,17 @@
     .btn-subtle { background: rgba(255, 255, 255, 0.04); border-color: var(--border); color: var(--muted); font-weight: 600; font-size: 11px; }
     .btn-subtle:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
 
+    .btn-plan {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.18);
+    }
+    .btn-browse {
+      background: linear-gradient(135deg, #f0a840, #b45309);
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(240, 168, 64, 0.18);
+    }
+
     /* ── Divider ── */
     .divider { flex-shrink: 0; height: 1px; background: var(--border); margin: 8px 0; }
 
@@ -389,8 +400,8 @@
     </div>
 
     <div class="btn-row">
-      <button id="loadPlan" class="btn-subtle">📋 ดึงข้อมูลแพ็กเกจ</button>
-      <button id="goBrowse" class="btn-subtle">🌐 ไปหน้า Browse</button>
+      <button id="loadPlan" class="btn-plan">📋 ดึงข้อมูลแพ็กเกจ</button>
+      <button id="goBrowse" class="btn-browse">🌐 ไปหน้า Browse</button>
     </div>
 
     <!-- Log -->
