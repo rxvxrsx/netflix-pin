@@ -220,7 +220,7 @@ chrome.runtime.onMessage.addListener(function(message) {
   if (message.status) {
     var t = getStatusType(message.status);
     setStatus(message.status, t);
-    if (message.pinString) {
+    if (message.pinString && message.status.indexOf(message.pinString) === -1) {
       appendLog(message.status + ' PIN: ' + message.pinString);
     } else {
       appendLog(message.status);
