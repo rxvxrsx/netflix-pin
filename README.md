@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="netflix-pin.png?v=2" alt="Netflix PIN" width="256" height="256" style="border-radius: 20px;">
+  <img src="netflix-pin.png?v=2" alt="Netflix PIN" width="96" height="96" style="border-radius: 20px;">
 </p>
 
 # 🔐 Netflix PIN Auto-Fill
@@ -26,13 +26,14 @@
 | ⬆️⬇️ **ลำดับ** | เลือกลองจากน้อย→มาก หรือ มาก→น้อย |
 | ⏱️ **Delay** | ปรับเวลาหน่วงระหว่างกดแต่ละปุ่ม (`keyDelay`) และระหว่างแต่ละรหัส (`codeDelay`) |
 | ⌨️ **Auto-Submit** | กด Enter ส่ง PIN อัตโนมัติหลังพิมพ์เสร็จ |
-| 📊 **สถานะ** | แสดงสถานะปัจจุบัน, PIN ล่าสุด (4-digit display), และชื่อแพ็กเกจ |
-| 📝 **บันทึก** | Log แสดง PIN ที่กำลังทดลอง — เปิด/ปิดได้ |
-| 📋 **แพ็กเกจ** | ดึงข้อมูลแพ็กเกจ Netflix จากหน้า `Account` อัตโนมัติ |
+| 🔁 **Resume** | กดหยุด → จำ PIN ล่าสุดไว้ → กดเริ่มต่อจากจุดเดิม |
+| 📊 **สถานะ** | แสดงสถานะ (เขียว=พร้อม, น้ำเงิน=กำลังรัน, แดง=หยุด) และ PIN ล่าสุดแบบ 4 หลัก |
+| 📋 **แพ็กเกจ** | ดึงข้อมูลแพ็กเกจจากหน้า Account — แสดงสีตามระดับ (ทอง=Premium, ฟ้า=Standard, ส้ม=Standard Ads, เขียว=Basic, ม่วง=Mobile) |
+| 📝 **บันทึก** | Log แสดง PIN ที่กำลังทดลอง, เจอ, ผิด — เปิด/ปิดได้ |
 | 🌐 **Browse** | ปุ่มไปหน้า `netflix.com/browse` ทันที |
-| 🎨 **Dark UI** | ดีไซน์สไตล์ Netflix — Dark theme, Glow effects, Pulse animation |
+| 🎨 **Dark UI** | ดีไซน์สไตล์ Netflix — ปุ่มสี Gradient, Glow effects, Pulse animation |
 | ⚡ **React Compat** | รองรับ Netflix ที่ใช้ React ด้วย Native Value Setter |
-| 📱 **Compact** | UI พอดี 600px ไม่มี Scrollbar ภายนอก |
+| 📱 **Compact** | UI พอดี 600px — ตั้งค่า + สถานะ + Log ในหน้าเดียว ไม่มี Scrollbar ภายนอก |
 
 ---
 
@@ -56,38 +57,43 @@ git clone https://github.com/rxvxrsx/netflix-pin-check.git
 
 | ตัวเลือก | คำอธิบาย | ค่าเริ่มต้น | ค่าต่ำสุด |
 |----------|----------|:---:|:---:|
-| **PIN เริ่มต้น** | หมายเลข PIN ที่จะเริ่มลอง | `0` | 0 |
+| **PIN เริ่มต้น** | หมายเลข PIN ที่จะเริ่มลอง (อัปเดตอัตโนมัติเมื่อกดหยุด) | `0` | 0 |
 | **ลำดับ** | น้อย→มาก หรือ มาก→น้อย | น้อย→มาก | — |
 | **หน่วงปุ่ม (ms)** | เวลาระหว่างกดแต่ละตัวเลข | `80` | 10 |
 | **หน่วงรหัส (ms)** | เวลารอหลังกรอก PIN ก่อนเช็คผล | `120` | 30 |
 
-### ▶️ เริ่มทำงาน
+### ▶️ ปุ่มควบคุม
 
-1. เปิดแท็บ Netflix ที่มีหน้าจอกรอก PIN
-2. ตั้งค่า PIN เริ่มต้นและ Delay ตามต้องการ
-3. กด **▶ เริ่มทำงาน** → Extension จะพิมพ์ PIN + กด Enter + รอผล
-4. กด **⏹ หยุด** เพื่อหยุดทันที
+| ปุ่ม | สี | การทำงาน |
+|-----|-----|----------|
+| **▶ ทำงานต่อ** | 🟢 เขียว | เริ่ม/ทำงานต่อจาก PIN ปัจจุบัน (ที่หยุดไว้) |
+| **⏹ หยุด** | 🔴 แดง | หยุด + บันทึก PIN ล่าสุดลงช่อง PIN เริ่มต้นอัตโนมัติ |
+| **💾 บันทึกค่า** | 🔵 ฟ้า | บันทึก config ลง Storage |
+| **↺ รีเซ็ต** | 🟣 ม่วง | คืนค่าเริ่มต้น |
+| **📋 ดึงข้อมูลแพ็กเกจ** | 🩷 ชมพู | ดึงชื่อแพ็กเกจจากหน้า Account |
+| **🌐 ไปหน้า Browse** | 🟠 ทอง | เปิด `netflix.com/browse` |
 
 ### 📊 ดูสถานะ
 
-| ส่วน | รายละเอียด |
-|------|------------|
-| **สถานะ** | `พร้อมใช้งาน` / `กำลังรัน` / `เจอ PIN ถูกต้อง: XXXX` / `หยุดแล้ว` |
-| **PIN** | แสดง PIN ปัจจุบันแบบ 4 หลัก (`[2][5][4][0]`) |
-| **แพ็กเกจ** | ชื่อแพ็กเกจ Netflix — กด **📋 แพ็กเกจ** เพื่อโหลด |
+| ส่วน | รายละเอียด | สี |
+|------|------------|-----|
+| **สถานะ** | `พร้อมใช้งาน` / `กำลังรัน` / `เจอ PIN ถูกต้อง: XXXX` / `หยุดแล้ว` | เขียว / น้ำเงิน / เขียว / แดง |
+| **PIN** | แสดง PIN ปัจจุบัน 4 หลัก (`[2][5][4][0]`) | น้ำเงิน |
+| **แพ็กเกจ** | Premium / Standard / Standard with Ads / Basic / Mobile | ทอง / ฟ้า / ส้ม / เขียว / ม่วง |
 
 ### 📝 บันทึก (Log)
 
-- แสดง PIN ที่กำลังทดลอง: `กำลังทดลองรหัส PIN: 2540`
+- กำลังลอง: `กำลังทดลองรหัส PIN: 2540`
 - เมื่อพบ: `เจอ PIN ถูกต้อง: 2604`
 - เมื่อผิด: `PIN ผิด: 2604 — ลองตัวถัดไป`
+- หยุด: `⏹ หยุดที่ PIN: 2540 | เริ่มต่อจากตรงนี้`
 - เปิด/ปิดด้วยปุ่ม **− / +**
 
 ### 📋 ตัวอย่างการตั้งค่า
 
 | สถานการณ์ | PIN เริ่มต้น | ลำดับ | หน่วงปุ่ม | หน่วงรหัส |
 |------------|:---:|-------|:---:|:---:|
-| ลองจาก 0000 ขึ้นไป | `0` | น้อย→มาก | 80 | 120 |
+| ลองจาก 0000 | `0` | น้อย→มาก | 80 | 120 |
 | ลองจาก 9999 ลงมา | `9999` | มาก→น้อย | 80 | 120 |
 | เริ่มกลางทาง | `4500` | น้อย→มาก | 80 | 120 |
 | เร็วขึ้น (เสี่ยง) | `0` | น้อย→มาก | 30 | 60 |
@@ -98,21 +104,22 @@ git clone https://github.com/rxvxrsx/netflix-pin-check.git
 
 ```
 netflix-pin/
-├── manifest.json     ← ตั้งค่า Extension (Manifest V3)
-├── background.js     ← Service Worker — จัดการแท็บ Netflix
-├── content.js        ← Content Script — กรอก PIN + อ่านแพ็กเกจ
-├── popup.html        ← UI Side Panel (Netflix Dark Theme)
-├── popup.js          ← Logic UI — Config, Status, Log
+├── manifest.json     ← ตั้งค่า Extension (Manifest V3, icons, permissions)
+├── background.js     ← Service Worker — รับคำสั่งจาก popup → ส่งไป content script
+├── content.js        ← Content Script — React PIN input, Enter submit, Polling, Plan info
+├── popup.html        ← UI Side Panel — Netflix Dark Theme, compact 600px
+├── popup.js          ← Logic UI — Config, Status colors, PIN display, Log, Resume
+├── netflix-pin.png   ← Logo และ Extension icon
 └── README.md
 ```
 
 | ไฟล์ | หน้าที่ |
 |------|--------|
-| `manifest.json` | ประกาศสิทธิ์ (`sidePanel`, `storage`, `scripting`), Content Script (`document_idle`) |
-| `background.js` | รับคำสั่งจาก popup → ส่งไป content script บนแท็บ Netflix → ตรวจสอบ response |
-| `content.js` | React-compatible PIN input, กด Enter อัตโนมัติ, Poll ผลลัพธ์, อ่านข้อมูลแพ็กเกจ |
-| `popup.html` | UI ดีไซน์ Netflix Dark Theme — compact พอดี 600px ไม่มี scroll |
-| `popup.js` | จัดการตั้งค่า, สถานะ, PIN display, Log, สื่อสารกับ background |
+| `manifest.json` | ประกาศสิทธิ์ (`sidePanel`, `storage`, `scripting`), icons, `document_idle` |
+| `background.js` | ส่งคำสั่ง start/stop/getPlanInfo/goToBrowse ไป content script + ตรวจสอบ response |
+| `content.js` | React-compatible PIN input, กด Enter, Poll ผลลัพธ์ (double-check), อ่านแพ็กเกจ, sync `window.currentPin` |
+| `popup.html` | ปุ่มสี Gradient 6 ปุ่ม, PIN 4-digit display, Status + Plan color-coded, Log collapsible |
+| `popup.js` | `setStatus` แยก type (running/success/error), `setPlanInfo` แยก class ตามแพ็กเกจ, Resume logic |
 
 ---
 
@@ -141,9 +148,10 @@ element.dispatchEvent(new Event('change', { bubbles: true }));
    - Error message โผล่ → **PIN ผิด** ❌ → ลองตัวต่อไป
    - หมดเวลา → ลองตัวต่อไป
 
-### Wait for DOM
-ก่อนพิมพ์ PIN ทุกครั้ง — รอให้ input fields โหลดพร้อม (สูงสุด 8 วิ)  
-→ รองรับ Netflix Single Page Application (SPA) navigation
+### Resume After Stop
+- `content.js` sync `window.currentPin` ทุกรอบของ loop
+- เมื่อกดหยุด → `stopAutoFillRoutine()` return `lastPin` → ส่งผ่าน background → popup อัปเดต `startPinInput.value`
+- กด ▶ ทำงานต่อ → อ่าน `startPinInput.value` → เริ่มจาก PIN ที่หยุดไว้
 
 ---
 
