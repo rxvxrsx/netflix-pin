@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="netflix-pin.png" alt="Netflix PIN" width="96" height="96" style="border-radius: 20px;">
+</p>
+
 # 🔐 Netflix PIN Auto-Fill
 
 > **Created by: REVERSE**

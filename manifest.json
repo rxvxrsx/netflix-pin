@@ -9,8 +9,18 @@
     "https://*.netflix.com/*",
     "https://netflix.com/*"
   ],
+  "icons": {
+    "16": "netflix-pin.png",
+    "48": "netflix-pin.png",
+    "128": "netflix-pin.png"
+  },
   "action": {
-    "default_title": "Netflix PIN Auto-Fill"
+    "default_title": "Netflix PIN Auto-Fill",
+    "default_icon": {
+      "16": "netflix-pin.png",
+      "48": "netflix-pin.png",
+      "128": "netflix-pin.png"
+    }
   },
   "background": {
     "service_worker": "background.js"
