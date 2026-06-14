@@ -26,6 +26,7 @@ const DEFAULT_CONFIG = {
 };
 
 let isRunning = false;
+let savedStartPin = 0;
 
 function appendLog(message) {
   const time = new Date().toLocaleTimeString();
@@ -101,8 +102,8 @@ function setBusyState(isBusy) {
 function doStart(label, forceReset) {
   var config = getConfigFromInputs();
   if (forceReset) {
-    // Override startPin to use the configured value (reset to beginning)
-    config.startPin = clampNumber(startPinInput.value, 0, 9999, 0);
+    // Reset to the originally configured/saved start PIN, not the current input value
+    config.startPin = savedStartPin;
   }
   var formattedPin = formatPin(config.startPin);
   setBusyState(true);
@@ -166,6 +167,7 @@ stopButton.addEventListener('click', function() {
 
 saveConfigButton.addEventListener('click', function() {
   var config = getConfigFromInputs();
+  savedStartPin = config.startPin;
   chrome.storage.local.set({netflixPinConfig: config}, function() {
     appendLog('\uD83D\uDCBE \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01: PIN=' + formatPin(config.startPin) + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
     setStatus('\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E41\u0E25\u0E49\u0E27', 'success');
@@ -291,6 +293,7 @@ function getSortOrderLabel(sortOrder) {
 function loadConfig() {
   chrome.storage.local.get(['netflixPinConfig'], function(result) {
     var config = result.netflixPinConfig || DEFAULT_CONFIG;
+    savedStartPin = config.startPin;
     setInputsFromConfig(config);
     setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'idle');
     setRunningState(false);
