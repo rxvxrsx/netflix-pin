@@ -153,7 +153,7 @@ saveConfigButton.addEventListener('click', function() {
   chrome.storage.local.set({netflixPinConfig: config}, function() {
     appendLog('\uD83D\uDCBE \u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01: PIN=' + formatPin(config.startPin) + ' | ' + getSortOrderLabel(config.sortOrder) + ' | key=' + config.keyDelay + 'ms code=' + config.codeDelay + 'ms');
     setStatus('\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E41\u0E25\u0E49\u0E27', 'success');
-    setTimeout(function() { setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'idle'); }, 1500);
+    setTimeout(function() { setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'success'); }, 1500);
   });
 });
 
@@ -161,7 +161,7 @@ resetConfigButton.addEventListener('click', function() {
   setInputsFromConfig(DEFAULT_CONFIG);
   chrome.storage.local.remove('netflixPinConfig', function() {
     appendLog('\u21BA \u0E23\u0E35\u0E40\u0E0B\u0E47\u0E15\u0E40\u0E1B\u0E47\u0E19\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19');
-    setStatus('\u0E23\u0E35\u0E40\u0E0B\u0E47\u0E15\u0E41\u0E25\u0E49\u0E27', 'idle');
+    setStatus('\u0E23\u0E35\u0E40\u0E0B\u0E47\u0E15\u0E41\u0E25\u0E49\u0E27', 'success');
   });
 });
 
@@ -216,7 +216,7 @@ goBrowseButton.addEventListener('click', function() {
     }
     appendLog('\uD83C\uDF10 \u0E40\u0E1B\u0E34\u0E14\u0E2B\u0E19\u0E49\u0E32 Browse \u0E41\u0E25\u0E49\u0E27');
     setStatus('\u0E40\u0E1B\u0E34\u0E14 Browse \u0E41\u0E25\u0E49\u0E27', 'success');
-    setTimeout(function() { setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'idle'); }, 1500);
+    setTimeout(function() { setStatus('\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19', 'success'); }, 1500);
   });
 });
 
@@ -227,7 +227,11 @@ chrome.runtime.onMessage.addListener(function(message) {
   if (message.status) {
     var t = getStatusType(message.status);
     setStatus(message.status, t);
-    appendLog(message.status);
+    if (message.pinString && message.status.indexOf(message.pinString) === -1) {
+      appendLog(message.status + ' PIN: ' + message.pinString);
+    } else {
+      appendLog(message.status);
+    }
     if (t === 'success' || t === 'idle' || t === 'error') setRunningState(false);
     else setRunningState(true);
   } else if (message.pinString) {
@@ -238,7 +242,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 function getStatusType(status) {
   if (status.includes('\u0E40\u0E08\u0E2D PIN \u0E16\u0E39\u0E01\u0E15\u0E49\u0E2D\u0E07')) return 'success';
   if (status.includes('\u0E44\u0E21\u0E48\u0E1E\u0E1A')) return 'error';
-  if (status.includes('\u0E2B\u0E22\u0E38\u0E14') || status.includes('\u0E04\u0E23\u0E1A\u0E17\u0E38\u0E01 PIN')) return 'idle';
+  if (status.includes('\u0E2B\u0E22\u0E38\u0E14') || status.includes('\u0E04\u0E23\u0E1A\u0E17\u0E38\u0E01 PIN')) return 'success';
   return 'running';
 }
 
