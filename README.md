@@ -41,7 +41,7 @@
 
 ```bash
 # 1. Clone โปรเจกต์
-git clone https://github.com/rxvxrsx/netflix-pin-check.git
+git clone https://github.com/rxvxrsx/netflix-pin.git
 
 # 2. เปิด Chrome → chrome://extensions
 # 3. เปิด Developer mode (มุมขวาบน)
@@ -160,7 +160,7 @@ element.dispatchEvent(new Event('change', { bubbles: true }));
 - ⚠️ ใช้กับ**บัญชีของตัวเองเท่านั้น**
 - 🔒 Extension ทำงานในเครื่องของคุณ — ไม่ส่งข้อมูลออกนอก
 - 🧩 Netflix อาจเปลี่ยน DOM → selector อาจต้องอัปเดตในอนาคต
-- 🐞 พบบั๊กหรือต้องการฟีเจอร์ใหม่? [เปิด Issue](https://github.com/rxvxrsx/netflix-pin-check/issues)
+- 🐞 พบบั๊กหรือต้องการฟีเจอร์ใหม่? [เปิด Issue](https://github.com/rxvxrsx/netflix-pin/issues)
 
 ---
 
